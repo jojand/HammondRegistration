@@ -12,9 +12,13 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.jojand.hamreg.logsum.LogSum;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
+    private static final int REGISTERS = 9;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,25 +54,31 @@ public class MainActivity extends AppCompatActivity {
     }
     
     private void calculateRegisters() {
-        EditText edit1 = findViewById(R.id.editText_0_0);
-        EditText edit2 = findViewById(R.id.editText_1_0);
+        LinearLayout firstRow = findViewById(R.id.linearLayout_firstRow);
+        LinearLayout secondRow = findViewById(R.id.linearLayout_secondRow);
+        LinearLayout resultRow = findViewById(R.id.linearLayout_resultRow);
 
-        String text1 = edit1.getText().toString();
-        String text2 = edit2.getText().toString();
+        for (int i=0; i<REGISTERS; i++) {
+            EditText inA = (EditText) firstRow.getChildAt(i);
+            EditText inB = (EditText) secondRow.getChildAt(i);
+            TextView resView = (TextView) resultRow.getChildAt(i);
 
-        double a = Double.parseDouble(text1);
-        double b = Double.parseDouble(text2);
+            String textA = inA.getText().toString();
+            String textB = inB.getText().toString();
 
-        Log.d(TAG, String.format("calculateRegisters: input: %f, %f", a, b));
+            double a=0, b=0;
 
-        a = a == 0 ? 0 : Math.pow(2, a-1);
-        b = b == 0 ? 0 : Math.pow(2, b-1);
-        Log.d(TAG, String.format("calculateRegisters: power: %f, %f", a, b));
+            try {
+                a = Double.parseDouble(textA);
+                b = Double.parseDouble(textB);
+            } catch (Exception e) {
+                Log.w(TAG, "some of the infput is invalid, using default value: 0");
+            }
 
-        double res = a + b;
-        Log.d(TAG, String.format("calculateRegisters: power sum: %f", res));
+            double res = LogSum.logSum(a, b);
 
-        res = res == 0 ? 0 : Math.round(1 + Math.log(res)/Math.log(2));
-        Log.d(TAG, String.format("calculateRegisters: result: %f", res));
+            Log.d(TAG, String.format("calculateRegisters %d: result: %f", i, res));
+            resView.setText(String.format("%d", (int)res));
+        }
     }
 }

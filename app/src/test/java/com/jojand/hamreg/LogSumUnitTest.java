@@ -1,5 +1,7 @@
 package com.jojand.hamreg;
 
+import com.jojand.hamreg.logsum.LogSum;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -9,9 +11,9 @@ import static org.junit.Assert.*;
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
-public class ExampleUnitTest {
+public class LogSumUnitTest {
     @Test
-    public void addition_isCorrect() {
-        assertEquals(4, 2 + 2);
+    public void logsumWorks() {
+        assertEquals(LogSum.logSum(2, 2), 3, 0);
     }
 }

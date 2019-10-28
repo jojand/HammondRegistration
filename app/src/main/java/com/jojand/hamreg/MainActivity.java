@@ -54,31 +54,22 @@ public class MainActivity extends AppCompatActivity {
     }
     
     private void calculateRegisters() {
-        LinearLayout firstRow = findViewById(R.id.linearLayout_firstRow);
-        LinearLayout secondRow = findViewById(R.id.linearLayout_secondRow);
-        LinearLayout resultRow = findViewById(R.id.linearLayout_resultRow);
+        EditText input = findViewById(R.id.input);
+        TextView resultView = findViewById(R.id.result);
+        String text = input.getText().toString();
 
-        for (int i=0; i<REGISTERS; i++) {
-            EditText inA = (EditText) firstRow.getChildAt(i);
-            EditText inB = (EditText) secondRow.getChildAt(i);
-            TextView resView = (TextView) resultRow.getChildAt(i);
+        LogSum logSum = new LogSum();
+        logSum.parseText(text);
 
-            String textA = inA.getText().toString();
-            String textB = inB.getText().toString();
+        input.setText(logSum.getText());
 
-            double a=0, b=0;
+        Double[] result = logSum.getResultSum();
 
-            try {
-                a = Double.parseDouble(textA);
-                b = Double.parseDouble(textB);
-            } catch (Exception e) {
-                Log.w(TAG, "some of the infput is invalid, using default value: 0");
-            }
-
-            double res = LogSum.logSum(a, b);
-
-            Log.d(TAG, String.format("calculateRegisters %d: result: %f", i, res));
-            resView.setText(String.format("%d", (int)res));
+        StringBuilder resultString = new StringBuilder();
+        for (Double registration: result) {
+            resultString.append(registration.intValue());
         }
+
+        resultView.setText(resultString.toString());
     }
 }
